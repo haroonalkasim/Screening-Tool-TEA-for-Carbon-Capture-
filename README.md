@@ -1,50 +1,51 @@
-# 🏭 Carbon Capture Technology Screening Tool
+# Carbon Capture Technology Screening Tool
 
 [![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![Streamlit](https://img.shields.io/badge/streamlit-1.30+-red.svg)](https://streamlit.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Database](https://img.shields.io/badge/database-V5_peer--reviewed-purple.svg)]()
-[![Validation](https://img.shields.io/badge/LCOC_anchor-€83%2Ft_MEA_cement-success.svg)]()
+[![Database](https://img.shields.io/badge/database-V6_peer--reviewed-purple.svg)]()
+[![Validation](https://img.shields.io/badge/LCOC_anchor-%E2%82%AC83%2Ft_MEA_cement-success.svg)]()
 
-### *Route-first pre-FEED screening for industrial CO₂ capture across four technology families*
+*Route-first pre-FEED screening for industrial CO2 capture across four technology families.*
 
-**Absorption · Adsorption · Membrane · Cryogenic**  
-Every parameter traces to a peer-reviewed source. Every result carries a confidence label.
+Absorption / Adsorption / Membrane / Cryogenic
 
-[Quickstart](#-quickstart) · [Theory](#-theoretical-background) · [Validation](#-validation) · [Architecture](#-architecture) · [Database](#-database-v5) · [References](#-references)
+Every parameter in the database traces to a peer-reviewed source. Every result carries a confidence label and an energy value validated against literature benchmarks.
+
+[Quickstart](#quickstart) / [Theory](#theoretical-background) / [Validation](#validation) / [Architecture](#architecture) / [Database](#database-v6) / [References](#references)
 
 ---
 
-## 📋 Overview
+## Overview
 
-This tool evaluates CO₂ capture routes across all four major separation families for any industrial feed gas. Given feed composition, operating conditions, and economic parameters, it ranks all feasible routes using a balanced score that combines cost, energy, technical fit, TRL maturity, and confidence — backed by 20+ peer-reviewed TEA studies.
+This tool evaluates CO2 capture routes across all four major separation families for any industrial feed gas. You enter the feed composition, operating pressure and temperature, and economic inputs. The tool ranks all feasible routes using a balanced score built from cost, energy demand, technical fit, TRL maturity, and confidence in the result. The database draws from more than 20 peer-reviewed techno-economic studies.
 
-It is designed for **pre-FEED technology selection**: narrowing from four families to one before committing to detailed simulation.
+The intended use is pre-FEED technology selection: narrowing from four families down to one or two before committing resources to detailed process simulation.
 
 ### What it does
 
-| Step | Description |
+| Step | What happens |
 |------|-------------|
-| **Classify regime** | Feed pressure × CO₂ composition → regime fit score per route |
-| **Generate candidates** | Route templates × sub-technology options → 27 candidates per run |
-| **Evaluate feasibility** | Impurity effects, pretreatment triggers, context flags, downstream requirements |
-| **Compute performance** | Family-specific energy/utility models, calibrated to literature |
-| **TEA** | Equipment CAPEX scaling + OPEX components → LCOC per route |
-| **Score and rank** | Balanced score: 32% cost + 15% energy + 24% fit + 12% TRL + 17% confidence |
-| **Report** | Downloadable structured Markdown engineering report |
+| Classify regime | Feed pressure and CO2 concentration determine how well each route fits its natural operating window |
+| Generate candidates | Route templates combined with sub-technology options produce 27 candidates per run |
+| Evaluate feasibility | Impurity thresholds, pretreatment requirements, site context, and CO2 destination are all checked |
+| Compute performance | Family-specific energy and utility models, each calibrated to published literature |
+| TEA | Equipment CAPEX from NETL 2023 installed-cost curves, regional location factors, and OPEX components give LCOC per route |
+| Score and rank | Balanced score: 32% cost, 15% energy, 24% technical fit, 12% TRL, 17% confidence |
+| Report | Downloadable Markdown engineering report covering all families |
 
-### Technology families
+### Technology families covered
 
-| Family | Sub-technologies in Database V5 |
-|--------|--------------------------------|
-| **Absorption** | MEA (TRL 9), MDEA (TRL 9), MDEA+PZ blend (TRL 8), Selexol physical (TRL 9), Rectisol physical (TRL 9) |
-| **Adsorption** | Zeolite 13X + PSA/TSA (TRL 9), Activated Carbon + PSA/TSA (TRL 9), Amine Solid sorbent (TRL 7) |
-| **Membrane** | Cellulose Acetate (TRL 9), Polysulfone (TRL 9), Polaris-type (TRL 8), Mixed Matrix (TRL 6) — 1- and 2-stage |
-| **Cryogenic** | High-CO₂ standalone (TRL 8), cryo polishing (TRL 7), membrane-cryo hybrid (TRL 6) |
+| Family | Options in Database V6 |
+|--------|------------------------|
+| Absorption | MEA (TRL 9), MDEA (TRL 9), MDEA+PZ blend (TRL 8), Selexol (TRL 9), Rectisol (TRL 9) |
+| Adsorption | Zeolite 13X with PSA or TSA (TRL 9), Activated Carbon with PSA or TSA (TRL 9), Amine Solid sorbent (TRL 7) |
+| Membrane | Cellulose Acetate (TRL 9), Polysulfone (TRL 9), Polaris-type (TRL 8), Mixed Matrix (TRL 6), single and two-stage |
+| Cryogenic | High-CO2 standalone (TRL 8), cryogenic polishing (TRL 7), membrane-cryogenic hybrid (TRL 6) |
 
 ---
 
-## 🚀 Quickstart
+## Quickstart
 
 ### Installation
 
@@ -57,25 +58,38 @@ pip install -r requirements.txt
 ### Run the app
 
 ```bash
-streamlit run carbon_capture_app_v1_8_8.py
+python -m streamlit run carbon_capture_app_v2_1.py
 ```
 
-Place `carbon_capture_master_data_pack_v5/` next to the script, or:
+Put `carbon_capture_master_data_pack_v6/` in the same folder as the script, or point to it directly:
 
 ```bash
-export CC_DATA_PACK=/path/to/carbon_capture_master_data_pack_v5
-streamlit run carbon_capture_app_v1_8_8.py
+export CC_DATA_PACK=/path/to/carbon_capture_master_data_pack_v6
+python -m streamlit run carbon_capture_app_v2_1.py
 ```
 
-### Programmatic example — cement plant
+All files needed in the same folder:
+
+```
+carbon_capture_app_v2_1.py
+twin_router.py
+twin_absorption_chemical.py
+twin_absorption_physical.py
+twin_membrane.py
+twin_adsorption.py
+twin_cryogenic.py
+carbon_capture_master_data_pack_v6/
+```
+
+### Programmatic example
 
 ```python
-from carbon_capture_app_v1_8_8 import DataPack, FeedCase, Economics, run_engine
+from carbon_capture_app_v2_1 import DataPack, FeedCase, Economics, run_engine
 from pathlib import Path
 
-db = DataPack(Path("carbon_capture_master_data_pack_v5"))
+db = DataPack(Path("carbon_capture_master_data_pack_v6"))
 
-# Cement kiln post-combustion flue gas (Roussanaly 2017 basis)
+# Cement kiln post-combustion flue gas, Roussanaly 2017 conditions
 feed = FeedCase(
     source_id="SRC_CEMENT", source_name="cement_flue_gas",
     flow_nm3_h=100_000,  pressure_bar=1.1,  temperature_c=120,
@@ -84,7 +98,8 @@ feed = FeedCase(
     capture_target_pct=90.0,  product_purity_pct=95.0,
     impurities={"O2":3.5, "H2S":0, "SOx":50, "NOx":100,
                 "HCl":5, "NH3":0, "Particulates":10, "HeavyHC":0},
-    process_context={"steam_available":"yes", "co2_destination":"storage"},
+    process_context={"steam_available":"yes", "co2_destination":"storage",
+                     "region":"Western Europe"},
 )
 
 econ = Economics(
@@ -96,78 +111,90 @@ econ = Economics(
 
 results = run_engine(db, feed, econ)
 top = results[0]
-print(f"Winner : {top['family']} — {top['option_name']}")
-print(f"LCOC   : €{top['lcoc_eur_t']:.1f}/tCO₂")
-print(f"Energy : {top['energy_gj_t']:.2f} GJ/tCO₂")
+print(f"Winner : {top['family']} - {top['option_name']}")
+print(f"LCOC   : {top['lcoc_eur_t']:.1f} EUR/tCO2")
+print(f"Energy : {top['energy_gj_t']:.2f} GJ/tCO2")
 print(f"Conf.  : {top['confidence_label']}")
-# → Winner : absorption — MEA
-# → LCOC   : €82.4/tCO₂   (literature: €83/t, Roussanaly 2017 GHGT-13)
-# → Energy : 2.01 GJ/tCO₂
-# → Conf.  : High
+# Winner : absorption - MEA
+# LCOC   : 83.2 EUR/tCO2   (literature: 83 EUR/t, Roussanaly 2017 GHGT-13)
+# Energy : 2.01 GJ/tCO2
+# Conf.  : High
 ```
 
 ---
 
-## 📈 Validation
+## Validation
 
-Spot-check results from 500-case stress testing against peer-reviewed anchors:
+Results from 500-case stress testing checked against peer-reviewed anchors:
 
-| Case | Tool | Literature | Source | Status |
-|------|------|-----------|--------|--------|
-| MEA, cement 24% CO₂, 1.1 bar, 90% capture | ~€82–85/t | **€83/t** avoided | Roussanaly et al. 2017, *Energy Procedia* GHGT-13 | ✅ |
-| AMP-PZ-MEA, cement 1.5 Mt/y | ~€68–74/t | **USD 77/t** (≈€66) | Nwaoha et al. 2018, *IJGGC* | ✅ |
-| Selexol/ADIP-X, SMR 18% CO₂, 20 bar | ~€40–45/t | **€41/t** avoided | Meerman et al. 2012, *IJGGC* | ✅ |
-| Cryogenic, cement 90% capture, electricity | 0.33 MWh/tCO₂ | **1.19 MJ/kgCO₂** = 0.331 MWh/t | Varnier et al. 2025, *Cleaner Eng. Technol.* | ✅ |
-| CEMCAP MEA reference | ~€80/t | **€80/t** | Voldsund et al. 2019, *Energies* 12, 542 | ✅ |
-| SEWGS reference sorbent, NGCC | ~€55–60/t | **€58/t** | van Selow et al. 2013, *IJGGC* | ✅ |
-| Calcium looping, tail-end cement | ~€50–56/t | **€52/t** | De Lena et al. 2019, *IJGGC* | ✅ |
+| Case | Tool result | Literature | Source |
+|------|------------|-----------|--------|
+| MEA, cement 24% CO2, 1.1 bar, 90% capture | 82-85 EUR/t | 83 EUR/t avoided | Roussanaly et al. 2017, Energy Procedia GHGT-13 |
+| AMP-PZ-MEA, cement 1.5 Mt/y | 68-74 EUR/t | USD 77/t | Nwaoha et al. 2018, IJGGC |
+| Selexol, SMR 18% CO2, 20 bar | 40-45 EUR/t | 41 EUR/t avoided | Meerman et al. 2012, IJGGC |
+| Cryogenic, cement 90% capture | 0.33 MWh/tCO2 | 0.331 MWh/t | Varnier et al. 2025, Cleaner Eng. Technol. |
+| MEA reference, CEMCAP | 80 EUR/t | 80 EUR/t | Voldsund et al. 2019, Energies 12, 542 |
+| SEWGS reference sorbent, NGCC | 55-60 EUR/t | 58 EUR/t | van Selow et al. 2013, IJGGC |
+| Calcium looping, tail-end cement | 50-56 EUR/t | 52 EUR/t | De Lena et al. 2019, IJGGC |
 
-**Amine comparison at cement conditions** (24% CO₂, 1.1 bar):
+Amine comparison at cement conditions (24% CO2, 1.1 bar):
 
-| Option | LCOC range | Energy | Confidence | Literature |
-|--------|-----------|--------|------------|------------|
-| MEA | €80–85/t | 2.0–2.1 GJ/t | High | Roussanaly 2017; Nwaoha 2018 |
-| AMP-PZ-MEA | €68–74/t | 1.8–1.9 GJ/t | High | Nwaoha 2018 |
-| DMX phase-change | €55–65/t | 1.8–2.0 GJ/t | Moderate | Le Moullec 2017; IFPEN 2021 |
-| Selexol (physical) | penalised out | — | Low | pCO₂ = 0.26 bar < 3 bar minimum |
-| Cryogenic | excluded | — | — | P < 6 bar hard gate |
+| Option | LCOC | Energy | Confidence | Literature basis |
+|--------|------|--------|------------|-----------------|
+| MEA | 80-85 EUR/t | 2.0-2.1 GJ/t | High | Roussanaly 2017; Nwaoha 2018 |
+| MDEA blend | 68-74 EUR/t | 1.8-1.9 GJ/t | High | Nwaoha 2018 |
+| Selexol | excluded, pCO2 below 3 bar | n/a | Low | Concawe 2025 |
+| Cryogenic | excluded, feed below 6 bar | n/a | n/a | pressure gate |
 
 ---
 
-## 🏗 Architecture
+## Architecture
 
 ```mermaid
 graph TB
-    A[User input<br/>Feed · Economics · Context] --> B[DataPack<br/>29 CSV files · cached]
-    B --> C[regime_score<br/>pressure × CO₂ → 0–1]
-    C --> D[candidate_routes<br/>templates × sub-technologies → 27 candidates]
+    A[User input - Feed, Economics, Context] --> B[DataPack - 31 CSV files V6]
+    B --> C[regime_score - pressure x CO2 to 0-1]
+    C --> D[candidate_routes - 27 candidates per run]
 
-    D --> E1[evaluate_impurities<br/>CAPEX/OPEX mult · reject flag]
-    D --> E2[evaluate_pretreatment<br/>feed conditioning burden]
-    D --> E3[apply_process_context<br/>site credits and penalties]
-    D --> E4[downstream_multiplier<br/>CO₂ destination burden]
+    D --> E1[evaluate_impurities - CAPEX/OPEX multipliers, reject flag]
+    D --> E2[evaluate_pretreatment - feed conditioning burden]
+    D --> E3[apply_process_context - site credits and penalties]
+    D --> E4[downstream_multiplier - CO2 destination burden]
 
     E1 --> F[Family performance models]
     E2 --> F
     E3 --> F
     E4 --> F
 
-    F --> G1[evaluate_absorption<br/>regen energy · pressure correction]
-    F --> G2[evaluate_adsorption<br/>working capacity · calibrated elec.]
-    F --> G3[evaluate_membrane<br/>solution-diffusion · compression]
-    F --> G4[evaluate_cryogenic<br/>3-tier elec. · hard gate P less than 6 bar]
+    F --> G1[evaluate_absorption - regen energy, pressure correction]
+    F --> G2[evaluate_adsorption - working capacity, calibrated electricity]
+    F --> G3[evaluate_membrane - solution-diffusion, compression]
+    F --> G4[evaluate_cryogenic - 3-tier electricity, P below 6 bar excluded]
 
-    G1 --> H[evaluate_route + run_engine<br/>CAPEX · OPEX · LCOC · energy<br/>confidence · balanced score · 27 ranked]
+    G1 --> H[evaluate_route and run_engine - CAPEX, OPEX, LCOC, energy, confidence, balanced score, 27 ranked]
     G2 --> H
     G3 --> H
     G4 --> H
 
-    H --> I1[Overview tab]
-    H --> I2[Absorption tab]
-    H --> I3[Adsorption tab]
-    H --> I4[Membrane tab]
-    H --> I5[Cryogenic tab]
-    H --> I6[Summary + report download]
+    H --> R[twin_router.py - enrich_all_results]
+    R --> T1[TW-1 twin_absorption_chemical - MEA/MDEA/PZ rate-based absorber]
+    R --> T2[TW-2 twin_absorption_physical - Selexol/Rectisol Henry-law flash]
+    R --> T3[TW-3 twin_membrane - Wijmans and Baker solution-diffusion]
+    R --> T4[TW-4 twin_adsorption - DSL isotherm plus PSA/TSA cycle]
+    R --> T5[TW-5 twin_cryogenic - PR EOS flash plus 3-tier electricity]
+
+    T1 --> I[Enriched results - twin LCOC, twin energy, profiles]
+    T2 --> I
+    T3 --> I
+    T4 --> I
+    T5 --> I
+
+    I --> J1[Overview tab]
+    I --> J2[Absorption tab]
+    I --> J3[Adsorption tab]
+    I --> J4[Membrane tab]
+    I --> J5[Cryogenic tab]
+    I --> J6[Summary and report download]
 
     style A fill:#E1F5EE,stroke:#0F6E56,color:#085041
     style B fill:#E1F5EE,stroke:#0F6E56,color:#085041
@@ -183,46 +210,53 @@ graph TB
     style G3 fill:#FAEEDA,stroke:#854F0B,color:#633806
     style G4 fill:#EEEDFE,stroke:#534AB7,color:#3C3489
     style H fill:#E1F5EE,stroke:#0F6E56,color:#085041
-    style I1 fill:#F1EFE8,stroke:#5F5E5A,color:#444441
-    style I2 fill:#E6F1FB,stroke:#185FA5,color:#0C447C
-    style I3 fill:#EAF3DE,stroke:#3B6D11,color:#27500A
-    style I4 fill:#FAEEDA,stroke:#854F0B,color:#633806
-    style I5 fill:#EEEDFE,stroke:#534AB7,color:#3C3489
-    style I6 fill:#F1EFE8,stroke:#5F5E5A,color:#444441
+    style R fill:#FDF4FF,stroke:#7C3AED,color:#5B21B6
+    style T1 fill:#E6F1FB,stroke:#185FA5,color:#0C447C
+    style T2 fill:#E6F1FB,stroke:#185FA5,color:#0C447C
+    style T3 fill:#FAEEDA,stroke:#854F0B,color:#633806
+    style T4 fill:#EAF3DE,stroke:#3B6D11,color:#27500A
+    style T5 fill:#EEEDFE,stroke:#534AB7,color:#3C3489
+    style I fill:#FDF4FF,stroke:#7C3AED,color:#5B21B6
+    style J1 fill:#F1EFE8,stroke:#5F5E5A,color:#444441
+    style J2 fill:#E6F1FB,stroke:#185FA5,color:#0C447C
+    style J3 fill:#EAF3DE,stroke:#3B6D11,color:#27500A
+    style J4 fill:#FAEEDA,stroke:#854F0B,color:#633806
+    style J5 fill:#EEEDFE,stroke:#534AB7,color:#3C3489
+    style J6 fill:#F1EFE8,stroke:#5F5E5A,color:#444441
 ```
 
-Full walkthrough in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+Full module walkthrough in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ---
 
-## 📐 Theoretical Background
+## Theoretical Background
 
 ### Regime scoring
 
-Feed pressure and CO₂ concentration determine which routes are in their natural operating window:
+Feed pressure and CO2 concentration determine which routes sit in their natural operating window. Routes outside their window are not excluded but take a score penalty that flows into the final ranking.
 
-| Regime | Window condition | In-window score | Out-of-window |
-|--------|-----------------|-----------------|---------------|
-| `low_pressure_flue_gas` | P ≤ 2 bar AND CO₂ ≤ 30% | 1.0 | 0.60 |
-| `high_pressure_precombustion_or_sweetening` | P ≥ 8 bar AND CO₂ ≥ 15% | 1.0 | 0.45 |
-| `moderate_pressure_dry_gas` | P ≥ 3 bar, H₂O ≤ 3%, 8% ≤ CO₂ ≤ 50% | 1.0 | 0.55 |
-| `niche_high_co2_high_pressure` | P ≥ 8 bar AND CO₂ ≥ 25% | 1.0 | 0.20 |
+| Regime | Condition | In-window | Out-of-window |
+|--------|-----------|-----------|--------------|
+| Low-pressure flue gas | P at or below 2 bar, CO2 at or below 30% | 1.0 | 0.60 |
+| High-pressure pre-combustion or sweetening | P at or above 8 bar, CO2 at or above 15% | 1.0 | 0.45 |
+| Moderate pressure dry gas | P at or above 3 bar, H2O at or below 3%, CO2 between 8% and 50% | 1.0 | 0.55 |
+| High-CO2 high-pressure niche | P at or above 8 bar, CO2 at or above 25% | 1.0 | 0.20 |
 
-*Basis: Concawe 2025 pCO₂ applicability guidance; Meerman 2012 high-pressure benchmark*
+*Source: Concawe 2025 pCO2 applicability guidance; Meerman 2012 high-pressure benchmark*
 
 ### Absorption
 
-Regeneration energy (mid-point of database range, Kohl & Nielsen 1997 framework):
+Regeneration energy uses the mid-point of the validated database range, following the Kohl and Nielsen 1997 reboiler duty framework:
 
 $$Q_{\text{regen}} = \frac{Q_{\min} + Q_{\max}}{2}$$
 
-Physical solvent pressure correction (Meerman 2012 calibration):
+Physical solvents require a minimum CO2 partial pressure. Below 3 bar pCO2 for Selexol or 5 bar for Rectisol, the route is excluded (Concawe 2025). Above the threshold, a pressure correction applies based on Meerman 2012:
 
-$$Q_{\text{phys}} = Q_{\text{regen}} \times \begin{cases} 0.85 & p_{\text{CO}_2} \geq 3\text{ bar} \;\;(P \geq 8\text{ bar, CO}_2 \geq 15\%) \\ 1.45 & \text{otherwise} \end{cases}$$
+$$Q_{\text{phys}} = Q_{\text{regen}} \times \begin{cases} 0.85 & p_{\text{CO}_2} \geq 3\text{ bar} \\ 1.45 & \text{otherwise} \end{cases}$$
 
-Database solvent values:
+Database solvent values (DB-1 validated):
 
-| Solvent | Q_min (GJ/t) | Q_max (GJ/t) | TRL |
+| Solvent | Q min (GJ/t) | Q max (GJ/t) | TRL |
 |---------|-------------|-------------|-----|
 | MEA | 3.5 | 4.2 | 9 |
 | MDEA | 2.2 | 3.0 | 9 |
@@ -230,75 +264,73 @@ Database solvent values:
 | Selexol | 0.8 | 1.5 | 9 |
 | Rectisol | 0.5 | 1.2 | 9 |
 
-### Adsorption specific electricity
+### Adsorption electricity
 
-Calibrated to literature (Chisalita 2024 TNO; Riboldi 2017 review):
+Specific electricity is taken from published results rather than derived from first principles, following Chisalita 2025 (TNO) and Riboldi 2017:
 
-| Swing mode | Range (MWh/tCO₂) | Base |
-|------------|-----------------|------|
-| PSA | 0.35–0.55 | 0.42 |
-| TSA | 0.45–0.70 | 0.55 |
-| VSA/PVSA | 0.50–0.85 | 0.62 |
+| Swing mode | Range (MWh/tCO2) | Base value |
+|------------|-----------------|-----------|
+| PSA | 0.35 to 0.55 | 0.42 |
+| TSA | 0.45 to 0.70 | 0.55 |
+| VSA/PVSA | 0.50 to 0.85 | 0.62 |
 
-Moisture correction to working capacity (Riboldi 2017):
+Moisture reduces effective working capacity (Li 2008; Webley group):
 
 $$q_{\text{eff}} = q_{\text{mid}} \times \begin{cases} 0.55 & \text{high sensitivity, H}_2\text{O} > 3\% \\ 0.75 & \text{medium sensitivity, H}_2\text{O} > 5\% \\ 1.00 & \text{otherwise} \end{cases}$$
 
-### Membrane — solution-diffusion model
+### Membrane
 
-Permeate CO₂ mole fraction (Wijmans & Baker 1995):
+Permeate CO2 composition from the solution-diffusion model (Wijmans and Baker 1995):
 
 $$y_{\text{perm}} = \frac{\alpha \cdot x_{\text{CO}_2}}{1 + (\alpha - 1)\,x_{\text{CO}_2}}$$
 
-Compression electricity (log-mean pressure ratio basis):
+Compression electricity accounts for feed compression at low pressure and permeate recompression to atmospheric, plus 0.05 MWh/t for auxiliary loads:
 
-$$W_{\text{elec}} = \dot{m}_{\text{cap}} \cdot \left(0.25 + 0.12\ln\!\left(\max\!\left(1.1,\,\frac{8}{P}\right)\right) + 0.12\cdot\mathbf{1}_{\text{2-stage}}\right)$$
+$$W_{\text{elec}} = \frac{n}{n-1} \cdot \frac{R \cdot T}{\eta} \cdot F \cdot \left[\left(\frac{P_2}{P_1}\right)^{(n-1)/n} - 1\right]$$
 
-### Cryogenic — three-tier electricity model
+### Cryogenic
 
-Anchored to Varnier et al. 2025 (1.19 MJ/kgCO₂ = 0.331 MWh/tCO₂ at cement 90% capture):
+Electricity demand uses three tiers anchored to Varnier et al. 2025 (1.19 MJ/kgCO2 at cement conditions, 90% capture) and the CEMCAP CPU results:
 
-| Tier condition | MWh/tCO₂ | Basis |
-|----------------|----------|-------|
-| P ≥ 12 bar, CO₂ ≥ 40%, dry | **0.38** | Varnier 2025 extrapolated; IEAGHG oxyfuel CPU |
-| P ≥ 8 bar, CO₂ ≥ 25% | **0.58** | CEMCAP membrane-assisted liquefaction |
-| All other feasible cases | **0.90** | Varnier 2025 cement atmospheric |
+| Condition | MWh/tCO2 | Source |
+|-----------|----------|--------|
+| P at or above 12 bar, CO2 at or above 40%, dry | 0.38 | Varnier 2025; CEMCAP oxyfuel CPU |
+| P at or above 8 bar, CO2 at or above 25% | 0.58 | CEMCAP membrane-assisted liquefaction |
+| All other feasible conditions | 0.90 | Varnier 2025 atmospheric case |
 
-**Hard gate: excluded if P < 6 bar** (no literature shows cryogenic winning at atmospheric pressure).
+Feed is excluded below 6 bar. No published study demonstrates cryogenic outperforming MEA at near-atmospheric pressure without upstream pre-concentration.
 
 ### LCOC
 
-$$\text{LCOC} = \frac{\text{CRF}(d, n) \cdot C_{\text{CAPEX}} + C_{\text{OPEX}}}{\dot{m}_{\text{CO}_2,\text{annual}}}$$
+$$\text{LCOC} = \frac{\text{CRF}(d, n) \cdot C_{\text{CAPEX}} + C_{\text{OPEX}}}{\dot{m}_{\text{CO}_2,\text{annual}}} \qquad \text{CRF}(d,n) = \frac{d(1+d)^n}{(1+d)^n - 1}$$
 
-$$\text{CRF}(d,n) = \frac{d(1+d)^n}{(1+d)^n - 1}$$
-
-CAPEX includes impurity, pretreatment, context, and downstream multipliers read from database CSV files. OPEX includes electricity, heat, cooling, solvent/sorbent replacement, maintenance, and labor.
+CAPEX uses NETL 2023 installed-cost curves with technology-specific scaling exponents and a regional location factor ranging from 0.60 for India to 1.85 for offshore platforms. OPEX covers electricity, heat, cooling water, sorbent or membrane replacement, maintenance at 3% of CAPEX, and labour.
 
 ### Confidence scoring
 
 $$C = \text{clip}\!\left(65 + \sum_i\Delta_i,\; 5,\; 95\right)$$
 
-| Signal | Δ |
-|--------|---|
-| In preferred regime window (score ≥ 0.75) | +8 |
-| Out of window | −6 |
-| Benchmark distance < 0.2 | +8 |
-| Benchmark distance > 0.6 | −8 |
-| TRL ≥ 8 | +8 |
-| TRL = 7 | +4 |
-| TRL ≤ 6 | −6 |
-| Purity shortfall | −5 |
-| Regime score < 0.5 | −8 |
+| Signal | Change |
+|--------|--------|
+| Feed in preferred regime window | +8 |
+| Feed out of window | -6 |
+| Benchmark distance below 0.2 | +8 |
+| Benchmark distance above 0.6 | -8 |
+| TRL 8 or above | +8 |
+| TRL 7 | +4 |
+| TRL 6 or below | -6 |
+| Product purity shortfall | -5 |
+| Regime score below 0.5 | -8 |
 
-**High ≥ 75 · Moderate ≥ 55 · Low < 55** — maximum achievable = 89 (High is reachable).
+High requires 75 or above. Moderate requires 55 or above. Low is below 55. The maximum achievable is 89.
 
 Full derivations in [`docs/THEORY.md`](docs/THEORY.md).
 
 ---
 
-## 🗂 Database V5
+## Database V6
 
-29 CSV files — every parameter references `references_master.csv` (DOI-traceable):
+31 CSV files, each parameter referenced back to `references_master.csv` with traceable DOIs:
 
 | Category | Files |
 |----------|-------|
@@ -306,111 +338,141 @@ Full derivations in [`docs/THEORY.md`](docs/THEORY.md).
 | Technology libraries | `absorption_solvents.csv`, `adsorbents.csv`, `membranes.csv`, `cryogenic_configs.csv`, `swing_modes.csv` |
 | Route structure | `route_templates.csv`, `route_equipment_map.csv` |
 | Equipment costs | `equipment_classes.csv`, `equipment_cost_anchors.csv`, `equipment_scaling_rules.csv` |
-| Utilities & consumables | `utility_mapping.csv`, `replacement_consumables.csv` |
+| Utilities and consumables | `utility_mapping.csv`, `replacement_consumables.csv` |
 | Feasibility logic | `impurity_effects.csv`, `pretreatment_rules.csv`, `post_treatment_rules.csv`, `process_context_rules.csv`, `downstream_handling_rules.csv` |
 | TEA anchors | `tea_cost_anchors.csv`, `tea_normalization_rules.csv`, `scope_boundary_definitions.csv`, `study_scope_mapping.csv` |
-| Benchmarks & validation | `benchmark_cases.csv`, `benchmark_case_tags.csv`, `validation_sets.csv`, `confidence_rules.csv` |
-| Product specs | `product_spec_targets.csv`, `species_properties.csv` |
+| Benchmarks and validation | `benchmark_cases.csv`, `benchmark_case_tags.csv`, `validation_sets.csv`, `confidence_rules.csv` |
+| Product specifications | `product_spec_targets.csv`, `species_properties.csv` |
+| Column geometry | `column_geometry_defaults.csv` |
 
 Full schema and column definitions in [`docs/DATABASE.md`](docs/DATABASE.md).
 
+V6 corrections from V5: Cellulose Acetate membrane permeance corrected from 800-1500 GPU to 80-200 GPU (Baker and Low 2014; NETL 2013). Polysulfone corrected from 600-1000 GPU to 100-200 GPU. All other parameters were checked against source literature and required no changes.
+
 ---
 
-## 📁 Repository layout
+## Repository Layout
 
 ```
 carbon-capture-screening/
 ├── README.md
-├── LICENSE                           MIT
-├── CITATION.cff                      academic citation
+├── LICENSE
+├── CITATION.cff
 ├── requirements.txt
-├── .gitignore
-├── carbon_capture_app_v1_8_8.py      main Streamlit app  (~1758 lines)
-├── carbon_capture_master_data_pack_v5/
-│   ├── engineering_backbone/          29 CSV files
-│   ├── tea_literature/                TEA study metadata + extracted metrics
-│   ├── references_master.csv          all references with DOI locators
+├── carbon_capture_app_v2_1.py          main Streamlit app (~2384 lines)
+├── twin_router.py                       routes FeedCase to the right twin model
+├── twin_absorption_chemical.py          MEA/MDEA/PZ rate-based absorber and stripper
+├── twin_absorption_physical.py          Selexol/Rectisol Henry-law flash regeneration
+├── twin_membrane.py                     solution-diffusion model, 1 and 2 stage
+├── twin_adsorption.py                   dual-site Langmuir isotherm and PSA/TSA cycle
+├── twin_cryogenic.py                    Peng-Robinson EOS flash and electricity tiers
+├── carbon_capture_master_data_pack_v6/
+│   ├── engineering_backbone/            31 CSV files
+│   ├── tea_literature/                  TEA study metadata and extracted metrics
+│   ├── references_master.csv
 │   ├── MANIFEST.csv
 │   └── README.txt
 └── docs/
-    ├── THEORY.md                      equations with full literature derivations
-    ├── ARCHITECTURE.md                code module walkthrough
-    ├── DATABASE.md                    schema and column definitions
-    └── VALIDATION.md                  spot-check results vs literature
+    ├── THEORY.md                        equations with full literature derivations
+    ├── ARCHITECTURE.md                  code module walkthrough
+    ├── DATABASE.md                      schema and column definitions
+    └── VALIDATION.md                    spot-check results against literature
 ```
 
 ---
 
-## ⚠️ Limitations
+## Limitations
 
-- Pre-FEED accuracy ±30–40%. Not for investment decisions, procurement, or FEED.
-- No dynamic simulation, column hydraulics, or rigorous thermodynamic VLE.
-- Cryogenic calibrated only to high-CO₂/high-pressure niche (≥ 20% CO₂, ≥ 6 bar).
-- Physical solvent results at borderline pCO₂ (2–4 bar) carry the highest model uncertainty.
-- All CAPEX uses six-tenths rule from 2019–2022 European cost bases; no regional adjustment.
-- Membrane model assumes ideal solution-diffusion; no plasticization or aging effects.
+Pre-FEED accuracy is roughly plus or minus 18-25% on CAPEX (NETL 2023 installed-cost basis) and plus or minus 25-35% overall. This is not suitable for investment decisions, procurement, or FEED-level engineering.
+
+No dynamic simulation, column hydraulics, or rigorous thermodynamic VLE is included. The adsorption model uses calibrated energy values rather than a solved breakthrough PDE. The cryogenic model applies the Peng-Robinson EOS for flash calculations but uses a three-tier electricity structure rather than a full refrigeration cycle simulation.
+
+Physical solvent results near the minimum pCO2 boundary (2 to 4 bar) carry the highest uncertainty. Membrane results assume ideal solution-diffusion transport with no plasticisation or ageing effects.
 
 ---
 
-## 📖 References
+## References
 
 **Absorption**
-- Roussanaly et al. *Energy Procedia* **114**, 6683–6696 (2017) — MEA cement €83/t [GHGT-13]
-- Nwaoha et al. *Int. J. Greenhouse Gas Control* **78**, 362–375 (2018) — AMP-PZ-MEA vs MEA
-- Meerman et al. *Int. J. Greenhouse Gas Control* **11**, 58–73 (2012) — Selexol SMR €41/t
-- Le Moullec et al. *Energy Procedia* **114**, 6472–6481 (2017) — DMX benchmarking
-- van Selow et al. *Int. J. Greenhouse Gas Control* **14**, 209–220 (2013) — SEWGS €49–58/t
-- Kohl, A. L. & Nielsen, R. B. *Gas Purification*, 5th ed., Gulf Publishing (1997)
+
+Roussanaly et al. *Energy Procedia* 114, 6683-6696 (2017). MEA cement 83 EUR/t. GHGT-13.
+
+Nwaoha et al. *Int. J. Greenhouse Gas Control* 78, 362-375 (2018). AMP-PZ-MEA vs MEA at cement conditions.
+
+Meerman et al. *Int. J. Greenhouse Gas Control* 11, 58-73 (2012). Selexol at SMR, 41 EUR/t.
+
+Le Moullec et al. *Energy Procedia* 114, 6472-6481 (2017). DMX phase-change solvent benchmarking.
+
+van Selow et al. *Int. J. Greenhouse Gas Control* 14, 209-220 (2013). SEWGS, 49-58 EUR/t.
+
+Kohl, A. L. and Nielsen, R. B. *Gas Purification*, 5th ed. Gulf Publishing, 1997.
 
 **Adsorption**
-- Chisalita et al. *Ind. Eng. Chem. Res.* **63** (2024) — monolithic 13X/AC structured TEA (TNO)
-- Riboldi & Bolland *Energy Procedia* **114**, 2016–2025 (2017) — PSA/VSA/TSA review (319 citations)
-- De Lena et al. *Int. J. Greenhouse Gas Control* **82**, 244–260 (2019) — calcium looping €52–58/t
+
+Chisalita et al. *Sep. Purif. Technol.* 353, 128466 (2025). Monolithic 13X/AC structured bed TEA, TNO.
+
+Riboldi and Bolland. *Energy Procedia* 114, 2016-2025 (2017). PSA/VSA/TSA review.
+
+De Lena et al. *Int. J. Greenhouse Gas Control* 82, 244-260 (2019). Calcium looping, 52-58 EUR/t.
 
 **Membrane**
-- Wijmans, J. G. & Baker, R. W. *J. Membr. Sci.* **107**, 1–21 (1995) — solution-diffusion model
-- Bouma et al. *Energy Procedia* **114**, 55–65 (2017) — membrane-cryo hybrid cement (TNO)
-- Concawe (2025) Report 25/11 — cross-technology applicability
+
+Wijmans, J. G. and Baker, R. W. *J. Membr. Sci.* 107, 1-21 (1995). Solution-diffusion model.
+
+Baker, R. W. and Low, B. T. *Macromolecules* (2014). CA membrane commercial permeance around 100 GPU.
+
+Merkel et al. *J. Membr. Sci.* 352, 126-135 (2010). Polaris membrane, 1000 GPU, selectivity 50.
+
+Bouma et al. *Energy Procedia* 114, 55-65 (2017). Membrane-cryogenic hybrid at cement, TNO.
+
+Concawe (2025) Report 25/11. Cross-technology applicability review.
 
 **Cryogenic**
-- Varnier et al. *Cleaner Eng. Technol.* (2025) — cryogenic cement 1.19 MJ/kgCO₂ at 90%
-- Voldsund et al. *Energies* **12**, 542 (2019) — CEMCAP comparative €42–84/t
 
-**Equipment cost bases**
-- Peters, M. S. & Timmerhaus, K. D. *Plant Design and Economics for Chemical Engineers*, 5th ed., McGraw-Hill (2003)
-- NETL (2023) *Cost of Capturing CO₂ from Industrial Sources* — [DOE/NETL report](https://netl.doe.gov/projects/files/CostofCapturingCO2fromIndustrialSources_033123.pdf)
-- NETL (2019) *QGESS CO₂ Transport and Storage Costs* — [DOE/NETL QGESS](https://netl.doe.gov/projects/files/QGESSCarbonDioxideTransportandStorageCostsinNETLStudies_081919.pdf)
+Varnier et al. *Cleaner Eng. Technol.* (2025). Cryogenic cement, 1.19 MJ/kgCO2 at 90% capture.
+
+Voldsund et al. *Energies* 12, 542 (2019). CEMCAP comparative, 42-84 EUR/t.
+
+Gardarsdottir et al. *Energies* 12, 542 (2019). CEMCAP Part 2 cost analysis.
+
+**Equipment cost basis**
+
+NETL (2023). *Cost of Capturing CO2 from Industrial Sources.* DOE/NETL report.
+
+Peters, M. S. and Timmerhaus, K. D. *Plant Design and Economics for Chemical Engineers*, 5th ed. McGraw-Hill, 2003.
+
+AACE International (2020). Location factor estimates for the process industries.
 
 ---
 
-## 📝 Citation
+## Citation
 
 ```bibtex
-@software{panangadan_cc_screening_2026,
+@software{panangadantakath_cc_screening_2026,
   author  = {Panangadantakath, Haroon Al Kasim},
   title   = {Carbon Capture Technology Screening Tool},
   year    = {2026},
   url     = {https://github.com/<your-username>/carbon-capture-screening},
   note    = {Route-first pre-FEED screening across absorption, adsorption,
-             membrane and cryogenic families. Database V5 backed by 20+
-             peer-reviewed TEA studies. Validated: MEA cement €83/t
-             (Roussanaly 2017), Selexol SMR €41/t (Meerman 2012),
+             membrane and cryogenic families. Database V6 backed by 20+
+             peer-reviewed TEA studies. Validated against MEA cement 83 EUR/t
+             (Roussanaly 2017), Selexol SMR 41 EUR/t (Meerman 2012),
              cryogenic cement 0.33 MWh/t (Varnier 2025).}
 }
 ```
 
 ---
 
-## 📜 License
+## License
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).
 
 ---
 
-## 👤 Author
+## Author
 
-**Haroon Al Kasim Panangadantakath** — Process Engineer | Carbon Capture & Industrial Decarbonisation
+**Haroon Al Kasim Panangadantakath** — Process Engineer, Carbon Capture and Industrial Decarbonisation
 
-> *"Pick the right technology family before you run the simulation."*
+*"Pick the right technology family before you run the simulation."*
 
-⭐ Star this repo if it helps your work.
+Star this repo if it helps your work.
