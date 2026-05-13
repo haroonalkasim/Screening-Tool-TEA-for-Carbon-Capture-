@@ -1,0 +1,113 @@
+cff-version: 1.2.0
+message: "If you use this software in academic work, please cite it as below."
+type: software
+
+title: "Carbon Capture Technology Screening Tool"
+version: "1.8.8"
+date-released: "2026-05-12"
+
+abstract: >
+  Route-first pre-FEED screening platform for industrial CO2 capture
+  technology selection across four families: absorption, adsorption,
+  membrane, and cryogenic. Database V5 backed by 20+ peer-reviewed
+  TEA studies. Validated against Roussanaly 2017 (MEA cement €83/t),
+  Meerman 2012 (Selexol SMR €41/t), and Varnier 2025 (cryogenic
+  cement 0.33 MWh/tCO2). Outputs LCOC, specific energy, and
+  confidence-labelled rankings for all feasible routes.
+
+authors:
+  - family-names: "Panangadantakath"
+    given-names: "Haroon Al Kasim"
+    orcid: ""
+    affiliation: ""
+
+repository-code: "https://github.com/<your-username>/carbon-capture-screening"
+license: MIT
+url: "https://github.com/<your-username>/carbon-capture-screening"
+
+keywords:
+  - carbon capture
+  - CCS
+  - CO2 capture
+  - techno-economic analysis
+  - MEA
+  - absorption
+  - adsorption
+  - membrane separation
+  - cryogenic
+  - pre-FEED screening
+  - industrial decarbonisation
+
+references:
+  - type: article
+    title: "Techno-economic analysis of CO2 capture from a cement kiln: MEA benchmark and heat-integration sensitivity"
+    authors:
+      - family-names: "Roussanaly"
+        given-names: "Simon"
+    journal: "Energy Procedia"
+    volume: 114
+    year: 2017
+    notes: "GHGT-13 cement MEA benchmark — €83/t avoided cost anchor"
+
+  - type: article
+    title: "Techno-economic analysis of CO2 capture from a 1.5 Mtpa cement plant using AMP-PZ-MEA and MEA processes"
+    authors:
+      - family-names: "Nwaoha"
+        given-names: "Chikezie"
+    journal: "International Journal of Greenhouse Gas Control"
+    volume: 78
+    year: 2018
+    notes: "AMP-PZ-MEA vs MEA cement — USD 77/t vs USD 93/t"
+
+  - type: article
+    title: "Techno-economic assessment of CO2 capture at steam methane reforming facilities using commercially available technology"
+    authors:
+      - family-names: "Meerman"
+        given-names: "J.C."
+    journal: "International Journal of Greenhouse Gas Control"
+    volume: 11
+    doi: "10.1016/j.ijggc.2012.02.018"
+    year: 2012
+    notes: "Selexol/ADIP-X at SMR — €41/t avoided cost anchor"
+
+  - type: article
+    title: "Energy-optimised cryogenic CO2 capture for cement production"
+    authors:
+      - family-names: "Varnier"
+        given-names: "Clément"
+    journal: "Cleaner Engineering and Technology"
+    year: 2025
+    notes: "Cryogenic cement — 1.19 MJ_el/kgCO2 at 90% capture"
+
+  - type: article
+    title: "An overview on pressure swing adsorption as a CO2 capture technology: State-of-the-art, limits and potentials"
+    authors:
+      - family-names: "Riboldi"
+        given-names: "Luca"
+      - family-names: "Bolland"
+        given-names: "Olav"
+    journal: "Energy Procedia"
+    volume: 114
+    year: 2017
+    notes: "PSA/VSA/TSA parameter ranges — 319 citations"
+
+  - type: article
+    title: "Techno-economic assessment of monolithic 13X-activated carbon adsorption structures for post-combustion CO2 capture"
+    authors:
+      - family-names: "Chisalita"
+        given-names: "Dora-Andreea"
+    journal: "Industrial and Engineering Chemistry Research"
+    year: 2024
+    notes: "TNO monolith adsorption TEA — adsorption electricity calibration"
+
+  - type: article
+    title: "Comparison of Technologies for CO2 Capture from Cement Production—Part 2: Cost Analysis"
+    authors:
+      - family-names: "Gardarsdottir"
+        given-names: "Stefania O."
+    journal: "Energies"
+    volume: 12
+    number: 542
+    doi: "10.3390/en12030542"
+    year: 2019
+    notes: "CEMCAP comparative €42–84/t"
